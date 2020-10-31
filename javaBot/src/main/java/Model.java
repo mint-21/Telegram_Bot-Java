@@ -2,7 +2,7 @@ public class Model {
     private String name;
     private Double temp;
     private Double humidity;
-    private String json;
+    private String icon;
     private String main;
 
 
@@ -30,12 +30,12 @@ public class Model {
         this.humidity = humidity;
     }
 
-    public String getJson() {
-        return json;
+    public String getIcon() {
+        return icon;
     }
 
-    public void setJson(String json) {
-        this.json = json;
+    public void setIcon(String json) {
+        this.icon = json;
     }
 
     public String getMain() {

@@ -3,7 +3,6 @@ import org.telegram.telegrambots.api.objects.Message;
 import org.telegram.telegrambots.api.objects.Update;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.exceptions.TelegramApiException;
-
 import java.io.IOException;
 
 public class Example extends TelegramLongPollingBot{
@@ -22,14 +21,15 @@ public class Example extends TelegramLongPollingBot{
 
     public void sendMsg(Message message, String text) {
         SendMessage sendMessage = new SendMessage();
-        sendMessage.enableMarkdown(true);
+        sendMessage.enableHtml(true);
+        sendMessage.enableMarkdown(false);
         sendMessage.setChatId(message.getChatId().toString());
         sendMessage.setReplyToMessageId(message.getMessageId());
         sendMessage.setText(text);
         Button button = new Button();
+        button.setButtons(sendMessage);
         try {
-            button.setButtons(sendMessage);
-            sendMessage(sendMessage);
+            execute(sendMessage.setText(text));
         } catch (TelegramApiException e) {
             e.printStackTrace();
         }
