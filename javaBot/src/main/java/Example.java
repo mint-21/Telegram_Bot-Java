@@ -20,6 +20,13 @@ public class Example extends TelegramLongPollingBot{
         return token;
     }
 
+    public void messageText(SendMessage sendMessage, String text) {
+        try {
+            execute(sendMessage.setText(text));
+        } catch (TelegramApiException e) {
+            e.printStackTrace();
+        }
+    }
 
     @Override
     public void onUpdateReceived(Update update) {
@@ -43,34 +50,18 @@ public class Example extends TelegramLongPollingBot{
         if (massage != null && massage.hasText()) {
             switch (massage.getText()){
                 case "/help":
-                    try {
-                        execute(sendMessage.setText("Чем могу помочь?"));
-                    } catch (TelegramApiException e) {
-                        e.printStackTrace();
-                    }
+                    messageText(sendMessage, "Чем могу помочь?");
                     break;
                 case "/settings":
-                    try {
-                        execute(sendMessage.setText("Что настраиваем?"));
-                    } catch (TelegramApiException e) {
-                        e.printStackTrace();
-                    }
+                    messageText(sendMessage, "Что настраиваем?");
                     break;
                 case "Другой город":
                     switch (massage.getText()) {
                         case "Другой город":
-                            try {
-                                execute(sendMessage.setText("Введите название города"));
-                            } catch (TelegramApiException e) {
-                                e.printStackTrace();
-                            }
+                            messageText(sendMessage, "Введите название города");
                             break;
                         default:
-                            try {
-                                execute(sendMessage.setText("Не найден"));
-                            } catch (TelegramApiException e) {
-                                e.printStackTrace();
-                            }
+                            messageText(sendMessage, "Не найден");
                     }
                     break;
                 case "Weather":
@@ -78,34 +69,18 @@ public class Example extends TelegramLongPollingBot{
                     button2.setButtons2(replyKeyboardMarkup);
                     switch (massage.getText()) {
                         case "Weather":
-                            try {
-                                execute(sendMessage.setText("В каком городе хотите узнать погоду?"));
-                            } catch (TelegramApiException e) {
-                                e.printStackTrace();
-                            }
+                            messageText(sendMessage, "В каком городе хотите узнать погоду?");
                             break;
                         default:
-                            try {
-                                execute(sendMessage.setText("Введите другую команду"));
-                            } catch (TelegramApiException e) {
-                                e.printStackTrace();
-                            }
+                            messageText(sendMessage, "Введите другую команду");
                     }
                     break;
                 default:
                     try {
                         String text = Weather.getWeather(massage.getText(), model);
-                        try {
-                            execute(sendMessage.setText(text));
-                        } catch (TelegramApiException e) {
-                            e.printStackTrace();
-                        }
+                        messageText(sendMessage, text);
                     } catch (IOException e) {
-                        try {
-                            execute(sendMessage.setText("Город не найден"));
-                        } catch (TelegramApiException ex) {
-                            ex.printStackTrace();
-                        }
+                        messageText(sendMessage, "Город не найден");
                     }
             }
         }
