@@ -56,6 +56,23 @@ public class Example extends TelegramLongPollingBot{
                         e.printStackTrace();
                     }
                     break;
+                case "Другой город":
+                    switch (massage.getText()) {
+                        case "Другой город":
+                            try {
+                                execute(sendMessage.setText("Введите название города"));
+                            } catch (TelegramApiException e) {
+                                e.printStackTrace();
+                            }
+                            break;
+                        default:
+                            try {
+                                execute(sendMessage.setText("Не найден"));
+                            } catch (TelegramApiException e) {
+                                e.printStackTrace();
+                            }
+                    }
+                    break;
                 case "Weather":
                     Button2 button2 = new Button2();
                     button2.setButtons2(replyKeyboardMarkup);
@@ -63,23 +80,6 @@ public class Example extends TelegramLongPollingBot{
                         case "Weather":
                             try {
                                 execute(sendMessage.setText("В каком городе хотите узнать погоду?"));
-                            } catch (TelegramApiException e) {
-                                e.printStackTrace();
-                            }
-                            break;
-                        default:
-                            try {
-                                execute(sendMessage.setText("Введите другую команду"));
-                            } catch (TelegramApiException e) {
-                                e.printStackTrace();
-                            }
-                    }
-                    break;
-                case "Другой город":
-                    switch (massage.getText()) {
-                        case "Другой город":
-                            try {
-                                execute(sendMessage.setText("Введите название города"));
                             } catch (TelegramApiException e) {
                                 e.printStackTrace();
                             }
