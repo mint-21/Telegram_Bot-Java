@@ -38,7 +38,6 @@ public class Example extends TelegramLongPollingBot{
         sendMessage.enableHtml(true);
         sendMessage.enableMarkdown(false);
         sendMessage.setChatId(massage.getChatId().toString());
-        sendMessage.setReplyToMessageId(massage.getMessageId());
         ReplyKeyboardMarkup replyKeyboardMarkup = new ReplyKeyboardMarkup();
         sendMessage.setReplyMarkup(replyKeyboardMarkup);
         replyKeyboardMarkup.setSelective(true);
@@ -47,41 +46,55 @@ public class Example extends TelegramLongPollingBot{
         Button button = new Button();
         button.setButtons(replyKeyboardMarkup);
 
-        if (massage != null && massage.hasText()) {
-            switch (massage.getText()){
-                case "/help":
-                    messageText(sendMessage, "Чем могу помочь?");
-                    break;
-                case "/settings":
-                    messageText(sendMessage, "Что настраиваем?");
-                    break;
-                case "Другой город":
-                    switch (massage.getText()) {
-                        case "Другой город":
-                            messageText(sendMessage, "Введите название города");
-                            break;
-                        default:
-                            messageText(sendMessage, "Не найден");
-                    }
-                    break;
-                case "Weather":
-                    Button2 button2 = new Button2();
-                    button2.setButtons2(replyKeyboardMarkup);
-                    switch (massage.getText()) {
-                        case "Weather":
-                            messageText(sendMessage, "В каком городе хотите узнать погоду?");
-                            break;
-                        default:
-                            messageText(sendMessage, "Введите другую команду");
-                    }
-                    break;
-                default:
-                    try {
-                        String text = Weather.getWeather(massage.getText(), model);
-                        messageText(sendMessage, text);
-                    } catch (IOException e) {
-                        messageText(sendMessage, "Город не найден");
-                    }
+        if (update.hasMessage()) {
+            if (massage.hasText()) {
+                switch (massage.getText()) {
+                    case "/help":
+                        Button3 button3 = new Button3();
+                        try {
+                            execute(button3.sendInlineKeyBoardMessage(massage.getChatId()));
+                        } catch (TelegramApiException e) {
+                            e.printStackTrace();
+                        }
+                        break;
+                    case "/settings":
+                        messageText(sendMessage, "Что настраиваем?");
+                        break;
+                    case "Другой город":
+                        switch (massage.getText()) {
+                            case "Другой город":
+                                messageText(sendMessage, "Введите название города");
+                                break;
+                            default:
+                                messageText(sendMessage, "Не найден");
+                        }
+                        break;
+                    case "Weather":
+                        Button2 button2 = new Button2();
+                        button2.setButtons2(replyKeyboardMarkup);
+                        switch (massage.getText()) {
+                            case "Weather":
+                                messageText(sendMessage, "В каком городе хотите узнать погоду?");
+                                break;
+                            default:
+                                messageText(sendMessage, "Введите другую команду");
+                        }
+                        break;
+                    default:
+                        try {
+                            String text = Weather.getWeather(massage.getText(), model);
+                            messageText(sendMessage, text);
+                        } catch (IOException e) {
+                            messageText(sendMessage, "Город не найден");
+                        }
+                }
+            }
+        }else if (update.hasCallbackQuery()) {
+            try {
+                execute(new SendMessage().setText(update.getCallbackQuery().getData())
+                        .setChatId(update.getCallbackQuery().getMessage().getChatId()));
+            } catch (TelegramApiException e) {
+                e.printStackTrace();
             }
         }
     }
